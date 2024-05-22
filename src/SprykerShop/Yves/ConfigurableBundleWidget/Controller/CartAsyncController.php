@@ -7,59 +7,48 @@
 
 namespace SprykerShop\Yves\ConfigurableBundleWidget\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \SprykerShop\Yves\ConfigurableBundleWidget\ConfigurableBundleWidgetFactory getFactory()
  */
-class CartController extends AbstractCartController
+class CartAsyncController extends AbstractCartController
 {
     /**
-     * @uses \SprykerShop\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin::ROUTE_NAME_CART
+     * @var string
+     */
+    protected const KEY_MESSAGES = 'messages';
+
+    /**
+     * @var string
+     */
+    protected const FLASH_MESSAGE_LIST_TEMPLATE_PATH = '@ShopUi/components/organisms/flash-message-list/flash-message-list.twig';
+
+    /**
+     * @uses \SprykerShop\Yves\CartPage\Plugin\Router\CartPageAsyncRouteProviderPlugin::ROUTE_NAME_CART_ASYNC_VIEW
      *
      * @var string
      */
-    protected const ROUTE_CART = 'cart';
+    protected const ROUTE_NAME_CART_ASYNC_VIEW = 'cart/async/view';
+
+    /**
+     * @var string
+     */
+    protected const PARAM_QUANTITY = 'quantity';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param string $configuredBundleGroupKey
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function removeConfiguredBundleAction(Request $request, string $configuredBundleGroupKey): Response
-    {
-        $response = $this->executeRemoveConfiguredBundleAction($request, $configuredBundleGroupKey);
-
-        return $response;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $configuredBundleGroupKey
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function changeConfiguredBundleQuantityAction(Request $request, string $configuredBundleGroupKey): Response
-    {
-        $response = $this->executeChangeConfiguredBundleQuantityAction($request, $configuredBundleGroupKey);
-
-        return $response;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $configuredBundleGroupKey
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function executeRemoveConfiguredBundleAction(Request $request, string $configuredBundleGroupKey): Response
+    public function removeConfiguredBundleAction(Request $request, string $configuredBundleGroupKey)
     {
         if (!$this->canRemoveCartItem()) {
             $this->addErrorMessage(static::GLOSSARY_KEY_PERMISSION_FAILED);
 
-            return $this->redirectResponseInternal(static::ROUTE_CART);
+            return $this->getMessagesJsonResponse();
         }
 
         $form = $this->getFactory()->getConfiguredBundleRemoveItemForm()->handleRequest($request);
@@ -67,7 +56,7 @@ class CartController extends AbstractCartController
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->addErrorMessage(static::MESSAGE_FORM_CSRF_VALIDATION_ERROR);
 
-            return $this->redirectResponseInternal(static::ROUTE_CART);
+            return $this->getMessagesJsonResponse();
         }
 
         $updateConfiguredBundleRequestTransfer = $this->createUpdateConfiguredBundleRequest($configuredBundleGroupKey);
@@ -82,23 +71,23 @@ class CartController extends AbstractCartController
 
         $this->handleResponseErrors($quoteResponseTransfer);
 
-        return $this->redirectResponseInternal(static::ROUTE_CART);
+        return $this->redirectResponseInternal(static::ROUTE_NAME_CART_ASYNC_VIEW);
     }
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param string $configuredBundleGroupKey
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function executeChangeConfiguredBundleQuantityAction(Request $request, string $configuredBundleGroupKey): Response
+    public function changeConfiguredBundleQuantityAction(Request $request, string $configuredBundleGroupKey)
     {
-        $quantity = $request->get('quantity', 1);
+        $quantity = $request->get(static::PARAM_QUANTITY, 1);
 
         if (!$this->canChangeCartItem($quantity)) {
             $this->addErrorMessage(static::GLOSSARY_KEY_PERMISSION_FAILED);
 
-            return $this->redirectResponseInternal(static::ROUTE_CART);
+            return $this->getMessagesJsonResponse();
         }
 
         $form = $this->getFactory()->getChangeConfiguredBundleQuantityForm()->handleRequest($request);
@@ -106,7 +95,7 @@ class CartController extends AbstractCartController
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->addErrorMessage(static::MESSAGE_FORM_CSRF_VALIDATION_ERROR);
 
-            return $this->redirectResponseInternal(static::ROUTE_CART);
+            return $this->getMessagesJsonResponse();
         }
 
         $updateConfiguredBundleRequestTransfer = $this->createUpdateConfiguredBundleRequest($configuredBundleGroupKey, $quantity);
@@ -121,6 +110,16 @@ class CartController extends AbstractCartController
 
         $this->handleResponseErrors($quoteResponseTransfer);
 
-        return $this->redirectResponseInternal(static::ROUTE_CART);
+        return $this->redirectResponseInternal(static::ROUTE_NAME_CART_ASYNC_VIEW);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function getMessagesJsonResponse(): JsonResponse
+    {
+        return $this->jsonResponse([
+            static::KEY_MESSAGES => $this->renderView(static::FLASH_MESSAGE_LIST_TEMPLATE_PATH)->getContent(),
+        ]);
     }
 }
