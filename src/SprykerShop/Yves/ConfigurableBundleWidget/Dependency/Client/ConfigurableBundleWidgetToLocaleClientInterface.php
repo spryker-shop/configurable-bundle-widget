@@ -9,8 +9,5 @@ namespace SprykerShop\Yves\ConfigurableBundleWidget\Dependency\Client;
 
 interface ConfigurableBundleWidgetToLocaleClientInterface
 {
-    /**
-     * @return string
-     */
     public function getCurrentLocale(): string;
 }

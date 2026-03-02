@@ -64,27 +64,16 @@ class QuoteConfiguredBundleWidget extends AbstractWidget
         $this->addNumberFormatConfigParameter();
     }
 
-    /**
-     * @return string
-     */
     public static function getName(): string
     {
         return 'QuoteConfiguredBundleWidget';
     }
 
-    /**
-     * @return string
-     */
     public static function getTemplate(): string
     {
         return '@ConfigurableBundleWidget/views/quote-configured-bundle-widget/quote-configured-bundle-widget.twig';
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return void
-     */
     protected function addQuoteParameter(QuoteTransfer $quoteTransfer): void
     {
         $this->addParameter(static::PARAMETER_QUOTE, $quoteTransfer);
@@ -126,17 +115,11 @@ class QuoteConfiguredBundleWidget extends AbstractWidget
         return $items;
     }
 
-    /**
-     * @return void
-     */
     protected function addIsQuantityChangeableParameter(): void
     {
         $this->addParameter(static::PARAMETER_IS_QUANTITY_CHANGEABLE, $this->getConfig()->isQuantityChangeable());
     }
 
-    /**
-     * @return void
-     */
     protected function addNumberFormatConfigParameter(): void
     {
         $numberFormatConfigTransfer = $this->getFactory()

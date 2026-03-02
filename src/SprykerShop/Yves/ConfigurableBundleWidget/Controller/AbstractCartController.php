@@ -53,12 +53,6 @@ abstract class AbstractCartController extends AbstractController
      */
     protected const CHANGE_CART_ITEM_PERMISSION_PLUGIN_KEY = 'ChangeCartItemPermissionPlugin';
 
-    /**
-     * @param string $configuredBundleGroupKey
-     * @param int|null $quantity
-     *
-     * @return \Generated\Shared\Transfer\UpdateConfiguredBundleRequestTransfer
-     */
     protected function createUpdateConfiguredBundleRequest(string $configuredBundleGroupKey, ?int $quantity = null): UpdateConfiguredBundleRequestTransfer
     {
         return (new UpdateConfiguredBundleRequestTransfer())
@@ -67,11 +61,6 @@ abstract class AbstractCartController extends AbstractController
             ->setQuantity($quantity);
     }
 
-    /**
-     * @param int|null $itemQuantity
-     *
-     * @return bool
-     */
     protected function canChangeCartItem(?int $itemQuantity = null): bool
     {
         if (!$this->getFactory()->getModuleConfig()->isQuantityChangeable()) {
@@ -85,19 +74,11 @@ abstract class AbstractCartController extends AbstractController
         return $this->canPerformCartItemAction(static::CHANGE_CART_ITEM_PERMISSION_PLUGIN_KEY);
     }
 
-    /**
-     * @return bool
-     */
     protected function canRemoveCartItem(): bool
     {
         return $this->canPerformCartItemAction(static::REMOVE_CART_ITEM_PERMISSION_PLUGIN_KEY);
     }
 
-    /**
-     * @param string $permissionPluginKey
-     *
-     * @return bool
-     */
     protected function canPerformCartItemAction(string $permissionPluginKey): bool
     {
         $quoteTransfer = $this->getFactory()
@@ -111,11 +92,6 @@ abstract class AbstractCartController extends AbstractController
         return $isQuoteEditable && $this->can($permissionPluginKey);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteResponseTransfer $quoteResponseTransfer
-     *
-     * @return void
-     */
     protected function handleResponseErrors(QuoteResponseTransfer $quoteResponseTransfer): void
     {
         foreach ($quoteResponseTransfer->getErrors() as $errorTransfer) {

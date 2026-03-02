@@ -18,9 +18,6 @@ class ConfiguredBundleGrouper implements ConfiguredBundleGrouperInterface
      */
     protected $configuredBundleMapper;
 
-    /**
-     * @param \SprykerShop\Yves\ConfigurableBundleWidget\Mapper\ConfiguredBundleMapperInterface $configuredBundleMapper
-     */
     public function __construct(ConfiguredBundleMapperInterface $configuredBundleMapper)
     {
         $this->configuredBundleMapper = $configuredBundleMapper;

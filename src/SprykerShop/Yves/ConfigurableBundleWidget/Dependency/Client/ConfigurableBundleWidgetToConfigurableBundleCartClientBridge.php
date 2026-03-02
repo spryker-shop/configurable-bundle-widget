@@ -25,21 +25,11 @@ class ConfigurableBundleWidgetToConfigurableBundleCartClientBridge implements Co
         $this->configurableBundleCartClient = $configurableBundleCartClient;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\UpdateConfiguredBundleRequestTransfer $updateConfiguredBundleRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteResponseTransfer
-     */
     public function removeConfiguredBundle(UpdateConfiguredBundleRequestTransfer $updateConfiguredBundleRequestTransfer): QuoteResponseTransfer
     {
         return $this->configurableBundleCartClient->removeConfiguredBundle($updateConfiguredBundleRequestTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\UpdateConfiguredBundleRequestTransfer $updateConfiguredBundleRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteResponseTransfer
-     */
     public function updateConfiguredBundleQuantity(UpdateConfiguredBundleRequestTransfer $updateConfiguredBundleRequestTransfer): QuoteResponseTransfer
     {
         return $this->configurableBundleCartClient->updateConfiguredBundleQuantity($updateConfiguredBundleRequestTransfer);

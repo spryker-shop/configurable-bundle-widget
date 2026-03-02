@@ -26,9 +26,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class ConfigurableBundleWidgetFactory extends AbstractFactory
 {
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\Grouper\ConfiguredBundleGrouperInterface
-     */
     public function createConfiguredBundleGrouper(): ConfiguredBundleGrouperInterface
     {
         return new ConfiguredBundleGrouper(
@@ -36,73 +33,46 @@ class ConfigurableBundleWidgetFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\Mapper\ConfiguredBundleMapperInterface
-     */
     public function createConfiguredBundleMapper(): ConfiguredBundleMapperInterface
     {
         return new ConfiguredBundleMapper();
     }
 
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\ConfigurableBundleWidgetConfig
-     */
     public function getModuleConfig(): ConfigurableBundleWidgetConfig
     {
         return $this->getConfig();
     }
 
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\Dependency\Client\ConfigurableBundleWidgetToConfigurableBundleCartClientInterface
-     */
     public function getConfigurableBundleClient(): ConfigurableBundleWidgetToConfigurableBundleCartClientInterface
     {
         return $this->getProvidedDependency(ConfigurableBundleWidgetDependencyProvider::CLIENT_CONFIGURABLE_BUNDLE_CART);
     }
 
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\Dependency\Client\ConfigurableBundleWidgetToQuoteClientInterface
-     */
     public function getQuoteClient(): ConfigurableBundleWidgetToQuoteClientInterface
     {
         return $this->getProvidedDependency(ConfigurableBundleWidgetDependencyProvider::CLIENT_QUOTE);
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormFactory
-     */
     public function getFormFactory(): FormFactory
     {
         return $this->getProvidedDependency(ConfigurableBundleWidgetDependencyProvider::FORM_FACTORY);
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
     public function getChangeConfiguredBundleQuantityForm(): FormInterface
     {
         return $this->getFormFactory()->create(ChangeConfiguredBundleQuantityForm::class);
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
     public function getConfiguredBundleRemoveItemForm(): FormInterface
     {
         return $this->getFormFactory()->create(ConfiguredBundleRemoveItemForm::class);
     }
 
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\Dependency\Client\ConfigurableBundleWidgetToLocaleClientInterface
-     */
     public function getLocaleClient(): ConfigurableBundleWidgetToLocaleClientInterface
     {
         return $this->getProvidedDependency(ConfigurableBundleWidgetDependencyProvider::CLIENT_LOCALE);
     }
 
-    /**
-     * @return \SprykerShop\Yves\ConfigurableBundleWidget\Dependency\Service\ConfigurableBundleWidgetToUtilNumberServiceInterface
-     */
     public function getUtilNumberService(): ConfigurableBundleWidgetToUtilNumberServiceInterface
     {
         return $this->getProvidedDependency(ConfigurableBundleWidgetDependencyProvider::SERVICE_UTIL_NUMBER);

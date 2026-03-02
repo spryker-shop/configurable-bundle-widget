@@ -22,12 +22,6 @@ class CartController extends AbstractCartController
      */
     protected const ROUTE_CART = 'cart';
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $configuredBundleGroupKey
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function removeConfiguredBundleAction(Request $request, string $configuredBundleGroupKey): Response
     {
         $response = $this->executeRemoveConfiguredBundleAction($request, $configuredBundleGroupKey);
@@ -35,12 +29,6 @@ class CartController extends AbstractCartController
         return $response;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $configuredBundleGroupKey
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function changeConfiguredBundleQuantityAction(Request $request, string $configuredBundleGroupKey): Response
     {
         $response = $this->executeChangeConfiguredBundleQuantityAction($request, $configuredBundleGroupKey);
@@ -48,12 +36,6 @@ class CartController extends AbstractCartController
         return $response;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $configuredBundleGroupKey
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     protected function executeRemoveConfiguredBundleAction(Request $request, string $configuredBundleGroupKey): Response
     {
         if (!$this->canRemoveCartItem()) {
@@ -85,12 +67,6 @@ class CartController extends AbstractCartController
         return $this->redirectResponseInternal(static::ROUTE_CART);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $configuredBundleGroupKey
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     protected function executeChangeConfiguredBundleQuantityAction(Request $request, string $configuredBundleGroupKey): Response
     {
         $quantity = $request->get('quantity', 1);

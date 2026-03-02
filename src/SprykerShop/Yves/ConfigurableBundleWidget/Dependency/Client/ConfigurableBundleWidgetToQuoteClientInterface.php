@@ -16,10 +16,5 @@ interface ConfigurableBundleWidgetToQuoteClientInterface
      */
     public function getQuote();
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return bool
-     */
     public function isQuoteEditable(QuoteTransfer $quoteTransfer): bool;
 }

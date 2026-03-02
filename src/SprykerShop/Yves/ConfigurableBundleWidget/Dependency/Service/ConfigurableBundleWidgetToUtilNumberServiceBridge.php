@@ -24,11 +24,6 @@ class ConfigurableBundleWidgetToUtilNumberServiceBridge implements ConfigurableB
         $this->utilNumberService = $utilNumberService;
     }
 
-    /**
-     * @param string|null $locale
-     *
-     * @return \Generated\Shared\Transfer\NumberFormatConfigTransfer
-     */
     public function getNumberFormatConfig(?string $locale = null): NumberFormatConfigTransfer
     {
         return $this->utilNumberService->getNumberFormatConfig($locale);

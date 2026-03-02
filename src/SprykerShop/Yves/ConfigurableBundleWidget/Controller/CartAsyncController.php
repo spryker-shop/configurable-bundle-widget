@@ -113,9 +113,6 @@ class CartAsyncController extends AbstractCartController
         return $this->redirectResponseInternal(static::ROUTE_NAME_CART_ASYNC_VIEW);
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     protected function getMessagesJsonResponse(): JsonResponse
     {
         return $this->jsonResponse([

@@ -20,11 +20,6 @@ class ConfigurableBundleWidgetControllerProvider extends AbstractYvesControllerP
      */
     protected const ROUTE_CART_CONFIGURED_BUNDLE_REMOVE = 'cart/configured-bundle/remove';
 
-    /**
-     * @param \Silex\Application $app
-     *
-     * @return void
-     */
     protected function defineControllers(Application $app): void
     {
         $this->addCartConfiguredBundleRemoveRoute();

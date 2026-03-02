@@ -12,10 +12,5 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface ConfiguredBundleMapperInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\ConfiguredBundleCollectionTransfer
-     */
     public function mapQuoteToConfiguredBundles(QuoteTransfer $quoteTransfer): ConfiguredBundleCollectionTransfer;
 }
