@@ -37,14 +37,10 @@ class ConfigurableBundleWidgetRouteProviderPlugin extends AbstractRouteProviderP
     public const ROUTE_NAME_CART_CONFIGURED_BUNDLE_CHANGE_QUANTITY = 'cart/configured-bundle/change';
 
     /**
-     * Specification:
+     * {@inheritDoc}
      * - Adds Routes to the RouteCollection.
      *
      * @api
-     *
-     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
-     *
-     * @return \Spryker\Yves\Router\Route\RouteCollection
      */
     public function addRoutes(RouteCollection $routeCollection): RouteCollection
     {
