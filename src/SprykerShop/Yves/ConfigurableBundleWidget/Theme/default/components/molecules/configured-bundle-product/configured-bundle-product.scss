@@ -1,5 +1,11 @@
+@use 'sass:meta';
+
 @mixin configurable-bundle-widget-configured-bundle-product($name: '.configured-bundle-product') {
     @include shop-ui-product-item($name) {
+        @if meta.mixin-exists(configurable-bundle-widget-configured-bundle-product-base-hook) {
+            @include configurable-bundle-widget-configured-bundle-product-base-hook;
+        }
+
         @include helper-breakpoint(lg) {
             flex-direction: row;
             justify-content: space-between;

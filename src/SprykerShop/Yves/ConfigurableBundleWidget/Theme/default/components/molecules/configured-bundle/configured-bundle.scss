@@ -1,5 +1,12 @@
+@use 'sass:meta';
+@use 'sass:map';
+
 @mixin configurable-bundle-widget-configured-bundle($name: '.configured-bundle') {
     #{$name} {
+        @if meta.mixin-exists(configurable-bundle-widget-configured-bundle-base-hook) {
+            @include configurable-bundle-widget-configured-bundle-base-hook;
+        }
+
         &--ordered {
             padding: 0.5rem;
             margin: 0 0.5rem;
@@ -8,8 +15,8 @@
         }
 
         &__content {
-            padding: 0 map-get($setting-spacing, 'default') map-get($setting-spacing, 'default');
-            margin: 0 -#{map-get($setting-spacing, 'default')};
+            padding: 0 map.get($setting-spacing, 'default') map.get($setting-spacing, 'default');
+            margin: 0 -#{map.get($setting-spacing, 'default')};
             border-bottom: 1px solid $setting-color-lighter;
         }
 
