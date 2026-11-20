@@ -22,7 +22,7 @@
     ajaxTriggerAttribute: null,
 } %}
 
-{%- block extraClass %} box{% endblock -%}
+{%- block extraClass %} box {{ config.jsName }}{% endblock -%}
 
 {% block body %}
     {% block bundle %}
@@ -100,14 +100,38 @@
         <div class="{{ config.name }}__products">
             {% block bundleProductListInner %}
                 {% set partialSumItemQuantity = 0 %}
+                {# Looked up once for the whole bundle. The cart stores the selected attributes and the category path of a cart item. #}
+                {% set isUserActionTrackingEnabled = findWidget('TraceableEventWidget').parameters.isUserActionTrackingEnabled ?? false %}
                 {% for item in data.bundleItems %}
                     {% if data.items[item.GroupKey] is defined %}
                         {% block bundleProductItem %}
+                            {# The cart item of the bundle product as the traceable events report it, like every cart line: the price in cents. #}
+                            {# Only a bundle shown with its cart items, e.g. in the cart, is tracked. #}
+                            {% set trackingDetails = null %}
+                            {% set cartItem = data.items[item.GroupKey] ?? null %}
+                            {% if cartItem and isUserActionTrackingEnabled %}
+                                {% set trackingDetails %}{% include model('tracking-details') ignore missing with { product: {
+                                    sku: cartItem.sku,
+                                    abstractSku: cartItem.abstractSku | default(null),
+                                    groupKey: cartItem.groupKey,
+                                    name: cartItem.name,
+                                    abstractName: cartItem.abstractName | default(null),
+                                    brand: cartItem.brand | default(null),
+                                    variant: cartItem.selectedVariantAttributes | default([]) | reduce((values, value) => values | merge([value]), []),
+                                    categories: cartItem.categoryPath | default([]) | map(categoryName => { name: categoryName }),
+                                    price: cartItem.unitPrice,
+                                    quantity: cartItem.quantity,
+                                } } only %}{% endset %}
+                            {% endif %}
+
                             {% include molecule('configured-bundle-product', 'ConfigurableBundleWidget') with {
                                 data: {
                                     product: item,
                                     currencyIsoCode: data.currencyIsoCode,
                                     priceMode: data.priceMode,
+                                },
+                                attributes: {
+                                    'tracking-details': trackingDetails ?: false,
                                 },
                             } only %}
                         {% endblock %}
